@@ -1,0 +1,2 @@
+# tools
+excelに記載のipアドレス一覧をCIDR表記に変換するツール
