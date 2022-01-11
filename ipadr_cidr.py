@@ -20,19 +20,25 @@ def test():
     for colums in list(cells):
         for cell in colums:
             if "-" not in cell.value:
-#                print(netaddr.iprange_to_cidrs(cell.value,cell.value))
                 ip = netaddr.iprange_to_cidrs(cell.value,cell.value)
                 ws[cell.coordinate] = cell.value
                 ip = str(ip)
                 ws[output_C + cell.coordinate[1:]] = ip
             else:
                 st,en = cell.value.split("-")
+                if st[-2:] == ".1":
+                    st = st[:-2] + ".0"
+                if en[-4:] == ".254" or en[-4:] == ".253":
+                    en = en[:-4] + ".255"
                 ip = netaddr.iprange_to_cidrs(st,en)
                 ws[cell.coordinate] = cell.value
                 if len(ip) == 1:
                     ip = str(ip)
                     ws[output_C + cell.coordinate[1:]] = ip
                 else:
+                    if st[-2:] == ".1":
+                        st = st[:-2] + ".0"
+                        print(st)
                     ws[output_C + cell.coordinate[1:]] = msg
 
     wb.save(output_wb)
